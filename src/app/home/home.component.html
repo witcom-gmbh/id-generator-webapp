@@ -1,0 +1,18 @@
+
+<div class="ui-g">
+    <div class="ui-g-3"></div>
+    <div class="ui-g-3"><button has-keycloak-authorization="cf-service#create" pButton type="button" label="Generator für Endkundenservice" class="ui-button-raised" (click)="toggleGenerator('cfservice')"></button></div>
+    <div class="ui-g-3"><button has-keycloak-authorization="is-service#create" pButton type="button" label="Generator für Infrastrukturservice" class="ui-button-raised" (click)="toggleGenerator('isservice')"></button></div>
+    <div class="ui-g-3"></div>
+</div>
+ 
+<p-panel header="ID-Generator für Endkundenservice" *ngIf="isCFServiceEnabled">
+    Content
+</p-panel>
+
+<p-panel header="ID-Generator für  Infrastrukturservice" *ngIf="isISServiceEnabled">
+    <isservice-id-generator></isservice-id-generator> 
+</p-panel>
+
+
+ 
