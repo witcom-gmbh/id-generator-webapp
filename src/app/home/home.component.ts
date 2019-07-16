@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-import {KeycloakAuthorizationService} from '@idapp/services/services';
+import {KeycloakAuthorizationService} from 'keycloak-authz-angular';
 
 @Component({
   selector: 'app-home',

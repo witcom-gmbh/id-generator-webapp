@@ -2,7 +2,7 @@ import { Directive,Input,OnInit,
   TemplateRef,
   ElementRef } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-import {KeycloakAuthorizationService} from '@idapp/services/services';
+import {KeycloakAuthorizationService,KeycloakResourcePermissionsCheck} from 'keycloak-authz-angular';
 
 
 @Directive({
@@ -27,7 +27,7 @@ export class HasKeycloakAuthorizationDirective {
         }
         this.noAuthPresentAction();
 
-        let authCheck = {};
+        let authCheck = <KeycloakResourcePermissionsCheck>{};
         let requiredScope = null;
         if (this.requiredAuthorization.includes("#")){
             let authArr = this.requiredAuthorization.split("#");
@@ -42,13 +42,10 @@ export class HasKeycloakAuthorizationDirective {
         }
 
         this.keycloakAngular.isLoggedIn().then(async res => {
-            this.authService.checkAuthorization(authCheck).then(authorized => {
-                if(authorized){
-                    this.authPresentAction();
-                }
-            })
-        },err => {
-            this.noAuthPresentAction();
+           if(this.authService.checkAuthorization(authCheck)){
+                this.authPresentAction();    
+                
+            }
         });
 
      }

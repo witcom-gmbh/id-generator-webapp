@@ -27,6 +27,7 @@
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
     "keycloak-angular": "^6.0.0",
+    "keycloak-authz-angular": "^1.0.1",
     "ngx-alerts": "^3.4.0",
     "ngx-clipboard": "^12.1.2",
     "ngx-logger": "^3.3.9",

@@ -1,5 +1,5 @@
 import { KeycloakService } from 'keycloak-angular';
-import {KeycloakAuthorizationService} from '@idapp/services/services';
+import {KeycloakAuthorizationService} from 'keycloak-authz-angular';
 import { environment } from '../../environments/environment';
 
 export function kcInitializer(keycloak: KeycloakService,authService:KeycloakAuthorizationService): () => Promise<any> {

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { KeycloakService, KeycloakAuthGuard } from 'keycloak-angular';
+import {KeycloakAuthorizationService,KeycloakAuthzAuthGuard} from 'keycloak-authz-angular';
 
 @Injectable()
-export class AppAuthGuard extends KeycloakAuthGuard {
-  constructor(protected router: Router, protected keycloakAngular: KeycloakService) {
-    super(router, keycloakAngular);
+export class AppAuthGuard extends KeycloakAuthzAuthGuard {
+  constructor(protected router: Router, protected keycloakAngular: KeycloakService, protected keycloakAuth: KeycloakAuthorizationService) {
+    super(router, keycloakAngular,keycloakAuth);
   }
 
   isAccessAllowed(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
@@ -16,21 +17,21 @@ export class AppAuthGuard extends KeycloakAuthGuard {
       }
 
       const requiredRoles = route.data.roles;
-      //console.log(this.roles);
-      //console.log(this.keycloakAngular._instance.idTokenParsed);
-      if (!requiredRoles || requiredRoles.length === 0) {
+      const requiredPermissions = route.data.permissions;
+
+      if (!requiredPermissions || requiredPermissions.length === 0) {
         return resolve(true);
       } else {
 
-        if (!this.roles || this.roles.length === 0) {
+        if (!this.permissions || this.permissions.length === 0) {
           resolve(false);
         }
         let granted: boolean = false;
-        for (const requiredRole of requiredRoles) {
-          if (this.roles.indexOf(requiredRole) > -1) {
-            granted = true;
-            break;
-          }
+        for (const requiredPermission of requiredPermissions) {
+            if (this.keycloakAuth.checkAuthorization(requiredPermission)){
+                granted = true;
+                break;
+            }
         }
         resolve(granted);
       }

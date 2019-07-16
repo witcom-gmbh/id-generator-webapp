@@ -10,7 +10,8 @@ import { LoggerModule } from 'ngx-logger';
 import { AlertModule } from 'ngx-alerts';
 
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
-import {KeycloakAuthorizationService} from '@idapp/services/services';
+//import {KeycloakAuthorizationService} from '@idapp/services/services';
+import {KeycloakAuthorizationService} from 'keycloak-authz-angular';
 import { kcInitializer } from './config/kc-init';
 
 import { ApiConfiguration } from './api/api-configuration';
@@ -26,6 +27,8 @@ import {DropdownModule} from 'primeng/dropdown';
 
 import { HomeComponent } from './home/home.component';
 import { HasKeycloakAuthorizationDirective } from './shared/has-keycloak-authorization.directive';
+import { KeycloakAuthzAngularModule } from 'keycloak-authz-angular';
+import { AuthztestComponent } from './authztest/authztest.component';
 
 export const KEYCLOAK_PROVIDER: Provider = {
     provide: APP_INITIALIZER,
@@ -46,7 +49,8 @@ export const API_PROVIDER: Provider = {
   declarations: [
     AppComponent,
     HomeComponent,
-    HasKeycloakAuthorizationDirective
+    HasKeycloakAuthorizationDirective,
+    AuthztestComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +61,7 @@ export const API_PROVIDER: Provider = {
     ButtonModule,
     SharedModule,
     DropdownModule,
+    KeycloakAuthzAngularModule,
     LoggerModule.forRoot(environment.loggerConfig),
     KeycloakAngularModule,
     ApiModule,
