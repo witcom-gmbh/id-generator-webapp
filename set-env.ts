@@ -42,6 +42,7 @@ export const environment = {
   apiConfig: apiConfig
 };
 `
+
 writeFile(targetPath, envConfigFile, function (err) {
   if (err) {
     console.log(err);

@@ -8,12 +8,12 @@ const routes: Routes = [
     {
       path: 'home', component: HomeComponent      
     },
-    /*{
+    {
       path: 'authztest', component: AuthztestComponent,canActivate: [AppAuthGuard] ,data:{permissions:[{
           rsname:"cf-service",
           scope:"create"  
       }]}
-    },*/
+    },
     
     {
         path: '', redirectTo: '/home', pathMatch: 'full' 

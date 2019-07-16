@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "config": "./node_modules/.bin/ts-node -O '{\"module\": \"commonjs\"}' ./set-env.ts",
-    "start": "npm run config -- --environment=dev && ng serve --host=0.0.0.0 --disable-host-check --configuration=dev",
-    "build": "npm run config -- --environment=prod && ng build --configuration=production",
+    "start": "npm run ng-swagger-gen && npm run config -- --environment=dev && ng serve --host=0.0.0.0 --disable-host-check --configuration=dev",
+    "build": "npm run ng-swagger-gen && npm run config -- --environment=prod && ng build --configuration=production",
     "ng-swagger-gen": "ng-swagger-gen",
     "test": "ng test",
     "lint": "ng lint",

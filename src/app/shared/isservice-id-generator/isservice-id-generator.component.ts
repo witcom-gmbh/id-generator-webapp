@@ -10,18 +10,18 @@ import { AlertService } from 'ngx-alerts';
 })
 export class ISServiceIdGeneratorComponent implements OnInit {
 
-    private managementDomains : ManagementDomainResponse;
-    private serviceOwners : ServiceOwnerResponse;
-    private isServiceTypes: ServiceTypeResponse;
-    private idRequest : ISIdRequest = <ISIdRequest>{};
-    private selectedServiceType=null;
-    private selectedServiceOwner=null;
-    private selectedMD=null;
-    private requestPending : boolean=false;
-    private generatedIds=null;
+    public managementDomains : ManagementDomainResponse;
+    public serviceOwners : ServiceOwnerResponse;
+    public isServiceTypes: ServiceTypeResponse;
+    public idRequest : ISIdRequest = <ISIdRequest>{};
+    public selectedServiceType=null;
+    public selectedServiceOwner=null;
+    public selectedMD=null;
+    public requestPending : boolean=false;
+    public generatedIds=null;
     
-    private ownerSelectionDisabled:boolean=true;
-    private mdSelectionDisabled:boolean=true;
+    public ownerSelectionDisabled:boolean=true;
+    public mdSelectionDisabled:boolean=true;
     
   constructor(
     private genHelperService: HelperService,

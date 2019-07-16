@@ -9,7 +9,7 @@ import {KeycloakAuthorizationService,KeycloakResourcePermission} from 'keycloak-
 export class AuthztestComponent implements OnInit {
     
     
-    private permissions: KeycloakResourcePermission[];
+    public permissions: KeycloakResourcePermission[];
 
   constructor(private keycloakAuth: KeycloakAuthorizationService) { }
 
