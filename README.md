@@ -15,4 +15,11 @@ KEYCLOAK_RESOURCE_ID=RESOURCE-ID
 API_GENERATOR_URL=URL-TO-ID-GENERATOR-API
 ``` 
 
+## Deyploying on OpenShift 
+The application can be deployed on openshift with the template-file openshift-template.yaml. The templates features
+
+* Chained build of the angular webapp. The runtime is a static webapp runnign on Nginx
+* Route with lets-encrpyt-certificate (requires tls-acme-controller)
+
+
 
