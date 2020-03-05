@@ -19,27 +19,27 @@ export class ISServiceIdGeneratorComponent implements OnInit {
     public selectedMD=null;
     public requestPending : boolean=false;
     public generatedIds=null;
-    
+
     public ownerSelectionDisabled:boolean=true;
     public mdSelectionDisabled:boolean=true;
-    
+
   constructor(
     private genHelperService: HelperService,
     private generatorService:GeneratorService,
     private alertService:AlertService
   ) {
-      
-      
+
+
   }
 
   ngOnInit() {
       this.idRequest.count=1;
       this.generatedIds="";
-      
+
       this.genHelperService.getApiV1ManagementDomain().subscribe(res => {
           this.managementDomains = res;
           this.selectedMD = this.managementDomains[0];
-          
+
       });
       this.genHelperService.getApiV1ServiceOwner().subscribe(res => {
           this.serviceOwners = res;
@@ -47,18 +47,18 @@ export class ISServiceIdGeneratorComponent implements OnInit {
 
       });
       this.genHelperService.getApiV1IsServiceType().subscribe(res => {
-          
+
           this.isServiceTypes = [{"name":"Bitte wählen","id":"none"}];
-          
+
           this.isServiceTypes = this.isServiceTypes.concat(res);
           //this.selectedServiceType = this.isServiceTypes[0];
-          
-          
+
+
       });
       //getApiV1CfServiceType
-      
+
   }
-  
+
   onServiceTypeChange(event) {
     let serviceType = event.value;
     if (serviceType.prefixTemplate){
@@ -68,11 +68,11 @@ export class ISServiceIdGeneratorComponent implements OnInit {
             this.ownerSelectionDisabled=false;
         }
         if (serviceType.prefixTemplate.includes("##MD##")){
-            this.mdSelectionDisabled=false; 
+            this.mdSelectionDisabled=false;
         }
     }
   }
-  
+
   isRequestDirty(){
       if (!this.selectedServiceType){
           return true;
@@ -83,7 +83,7 @@ export class ISServiceIdGeneratorComponent implements OnInit {
       }
       return false;
   }
-  
+
   requestIds() {
       if (this.selectedServiceType.id=="none"){
           return;
@@ -92,7 +92,7 @@ export class ISServiceIdGeneratorComponent implements OnInit {
       this.idRequest.serviceOwner = this.selectedServiceOwner.id;
       this.idRequest.serviceType = this.selectedServiceType.id;
       this.idRequest.md = this.selectedMD.id;
-      
+
       this.generatorService.postApiV1IsService(this.idRequest).subscribe(res => {
           console.log(res);
           this.generatedIds=res.serviceIds.join("\r\n");
@@ -102,7 +102,7 @@ export class ISServiceIdGeneratorComponent implements OnInit {
               this.alertService.warning('IDs konnten nicht erzeugt werden');
               this.requestPending=false;
       })
-      
+
   }
 
 }
