@@ -1,3 +1,4 @@
 /* tslint:disable */
+import { ServiceType } from './service-type';
 
-export type ServiceTypeResponse = Array<{name?: string, id?: string, sequenceKey?: any, type?: string, prefixTemplate?: string}>;
+export type ServiceTypeResponse = Array<ServiceType>;

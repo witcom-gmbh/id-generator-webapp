@@ -24,6 +24,7 @@ import {TabViewModule} from 'primeng/tabview';
 import {PanelModule} from 'primeng/panel';
 import {ButtonModule} from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 import { HomeComponent } from './home/home.component';
 import { HasKeycloakAuthorizationDirective } from './shared/has-keycloak-authorization.directive';

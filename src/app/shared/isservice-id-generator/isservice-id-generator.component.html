@@ -1,5 +1,30 @@
 
-<div class="ui-g">
+<div class="ui-g" *ngIf="!advancedMode">
+
+    <div class="ui-g-3">
+    Service-Typ <p-dropdown [autoWidth]="true" required [options]="serviceTemplates" [(ngModel)]="selectedServiceTemplate" optionLabel="name"></p-dropdown>
+    </div>
+
+    <div class="ui-g-3">
+    Anzahl <p-spinner [(ngModel)]="idRequest.count" [min]="1" [max]="50"></p-spinner>
+    </div>
+
+    <div class="ui-g-4">
+    </div>
+
+    <div class="ui-g-1">
+    <button pButton type="button" label="IDs erzeugen" class="ui-button-raised" (click)="requestTemplatedIds()" [disabled]="templateRequestPending||isTemplateRequestDirty()"></button>
+    </div>
+
+    <div class="ui-g-1">
+    <button pButton type="button" label="Erweitert" class="ui-button-raised" (click)="toggleMode()" [disabled]="advancedMode"></button>
+    </div>
+
+
+</div>
+
+
+<div class="ui-g" *ngIf="advancedMode">
     <div class="ui-g-2">
     Service-Typ <p-dropdown required [options]="isServiceTypes" [(ngModel)]="selectedServiceType" optionLabel="name" (onChange)="onServiceTypeChange($event)"></p-dropdown>
     </div>
@@ -10,11 +35,15 @@
     Management-Domain <p-dropdown [options]="managementDomains" [(ngModel)]="selectedMD" optionLabel="name" [disabled]="mdSelectionDisabled"></p-dropdown>
     </div>
     <div class="ui-g-3">
-    <p-spinner [(ngModel)]="idRequest.count" [min]="1" [max]="50"></p-spinner>
+    Anzahl <p-spinner [(ngModel)]="idRequest.count" [min]="1" [max]="50"></p-spinner>
     </div>
-    <div class="ui-g-2">
+    <div class="ui-g-1">
     <button pButton type="button" label="IDs erzeugen" class="ui-button-raised" (click)="requestIds()" [disabled]="requestPending||isRequestDirty()"></button>
     </div>
+    <div class="ui-g-1">
+    <button pButton type="button" label="Einfach" class="ui-button-raised" (click)="toggleMode()" [disabled]="!advancedMode"></button>
+    </div>
+
 </div>
 
 
@@ -27,8 +56,11 @@
 <textarea [rows]="20" [cols]="70" pInputTextarea autoResize="false" [(ngModel)]="generatedIds" #generatorContent></textarea>
 
 </div>
-<div class="ui-g-3"></div>
+
 </div>
 
+<div class="ui-g-3">
+
+</div>
 
 

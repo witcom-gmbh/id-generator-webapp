@@ -1,3 +1,4 @@
 /* tslint:disable */
+import { Sequence } from './sequence';
 
-export type GetSequencesResponse = Array<{key?: string}>;
+export type GetSequencesResponse = Array<Sequence>;
