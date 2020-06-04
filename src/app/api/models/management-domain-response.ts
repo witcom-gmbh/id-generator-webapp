@@ -1,3 +1,4 @@
 /* tslint:disable */
+import { ManagementDomain } from './management-domain';
 
-export type ManagementDomainResponse = Array<{name?: string, id?: string}>;
+export type ManagementDomainResponse = Array<ManagementDomain>;

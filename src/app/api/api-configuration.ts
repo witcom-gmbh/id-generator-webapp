@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = '//id-generator.dev.witcom.services';
+  rootUrl: string = '';
 }
 
 export interface ApiConfigurationInterface {

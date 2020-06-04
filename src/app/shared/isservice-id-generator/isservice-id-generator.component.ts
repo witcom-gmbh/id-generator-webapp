@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HelperService,GeneratorService } from '@idapp/api/services';
-import { ManagementDomainResponse,ServiceOwnerResponse,ServiceTypeResponse,ISIdRequest} from '@idapp/api/models';
+import { ManagementDomainResponse,ServiceOwnerResponse,ServiceTypeResponse,ISIdRequest,ServiceTemplate} from '@idapp/api/models';
 import { AlertService } from 'ngx-alerts';
 
 @Component({
@@ -20,8 +20,15 @@ export class ISServiceIdGeneratorComponent implements OnInit {
     public requestPending : boolean=false;
     public generatedIds=null;
 
+
+    public templateRequestPending : boolean=false;
+    public serviceTemplates : ServiceTemplate[];
+    public selectedServiceTemplate : ServiceTemplate;
+
     public ownerSelectionDisabled:boolean=true;
     public mdSelectionDisabled:boolean=true;
+
+    public advancedMode:boolean = false;
 
   constructor(
     private genHelperService: HelperService,
@@ -36,17 +43,25 @@ export class ISServiceIdGeneratorComponent implements OnInit {
       this.idRequest.count=1;
       this.generatedIds="";
 
-      this.genHelperService.getApiV1ManagementDomain().subscribe(res => {
+      this.genHelperService.getServiceTemplates().subscribe(res => {
+
+        this.serviceTemplates = [{"name":"Bitte wählen","template":null}];
+
+        this.serviceTemplates = this.serviceTemplates.concat(res.filter(t => t.type == "IS"));
+
+      });
+
+      this.genHelperService.getManagementDomains().subscribe(res => {
           this.managementDomains = res;
           this.selectedMD = this.managementDomains[0];
 
       });
-      this.genHelperService.getApiV1ServiceOwner().subscribe(res => {
+      this.genHelperService.getServiceOwners().subscribe(res => {
           this.serviceOwners = res;
           this.selectedServiceOwner = this.serviceOwners[0];
 
       });
-      this.genHelperService.getApiV1IsServiceType().subscribe(res => {
+      this.genHelperService.getIsServiceTypes().subscribe(res => {
 
           this.isServiceTypes = [{"name":"Bitte wählen","id":"none"}];
 
@@ -73,6 +88,21 @@ export class ISServiceIdGeneratorComponent implements OnInit {
     }
   }
 
+  toggleMode(){
+    if (this.advancedMode){
+      this.advancedMode=false;
+    } else {
+      this.advancedMode=true;
+    }
+  }
+
+  isTemplateRequestDirty(){
+    if (!this.selectedServiceTemplate){
+      return true;
+    }
+
+  }
+
   isRequestDirty(){
       if (!this.selectedServiceType){
           return true;
@@ -84,6 +114,27 @@ export class ISServiceIdGeneratorComponent implements OnInit {
       return false;
   }
 
+  requestTemplatedIds() {
+
+    this.templateRequestPending=true;
+    this.idRequest.serviceOwner = this.selectedServiceTemplate.template.serviceOwner;
+    this.idRequest.serviceType = this.selectedServiceTemplate.template.serviceType;
+    this.idRequest.md = this.selectedServiceTemplate.template.md;
+    //this.idRequest.count =
+
+      this.generatorService.generateISServiceIds(this.idRequest).subscribe(res => {
+          console.log(res);
+          this.generatedIds=res.serviceIds.join("\r\n");
+          this.templateRequestPending=false;
+      }, err => {
+              console.error(err);
+              this.alertService.warning('IDs konnten nicht erzeugt werden');
+              this.templateRequestPending=false;
+      })
+
+
+  }
+
   requestIds() {
       if (this.selectedServiceType.id=="none"){
           return;
@@ -93,7 +144,7 @@ export class ISServiceIdGeneratorComponent implements OnInit {
       this.idRequest.serviceType = this.selectedServiceType.id;
       this.idRequest.md = this.selectedMD.id;
 
-      this.generatorService.postApiV1IsService(this.idRequest).subscribe(res => {
+      this.generatorService.generateISServiceIds(this.idRequest).subscribe(res => {
           console.log(res);
           this.generatedIds=res.serviceIds.join("\r\n");
           this.requestPending=false;

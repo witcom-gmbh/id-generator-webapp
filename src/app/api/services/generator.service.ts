@@ -14,8 +14,8 @@ import { ISIdRequest } from '../models/isid-request';
   providedIn: 'root',
 })
 class GeneratorService extends __BaseService {
-  static readonly GeneratorGenerateCFIdV1Path = '/api/v1/cf-service';
-  static readonly postApiV1IsServicePath = '/api/v1/is-service';
+  static readonly generateCFServiceIdsPath = '/api/v1/cf-service';
+  static readonly generateISServiceIdsPath = '/api/v1/is-service';
 
   constructor(
     config: __Configuration,
@@ -25,10 +25,11 @@ class GeneratorService extends __BaseService {
   }
 
   /**
+   * Generate Service-IDs
    * @param body undefined
    * @return Service-IDs generated
    */
-  GeneratorGenerateCFIdV1Response(body?: CustomerIdRequest): __Observable<__StrictHttpResponse<IdResponse>> {
+  generateCFServiceIdsResponse(body?: CustomerIdRequest): __Observable<__StrictHttpResponse<IdResponse>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -51,20 +52,22 @@ class GeneratorService extends __BaseService {
     );
   }
   /**
+   * Generate Service-IDs
    * @param body undefined
    * @return Service-IDs generated
    */
-  GeneratorGenerateCFIdV1(body?: CustomerIdRequest): __Observable<IdResponse> {
-    return this.GeneratorGenerateCFIdV1Response(body).pipe(
+  generateCFServiceIds(body?: CustomerIdRequest): __Observable<IdResponse> {
+    return this.generateCFServiceIdsResponse(body).pipe(
       __map(_r => _r.body as IdResponse)
     );
   }
 
   /**
+   * Generate Infrastructure Service-IDs
    * @param body undefined
-   * @return User info updated
+   * @return IS Service-IDs created
    */
-  postApiV1IsServiceResponse(body?: ISIdRequest): __Observable<__StrictHttpResponse<IdResponse>> {
+  generateISServiceIdsResponse(body?: ISIdRequest): __Observable<__StrictHttpResponse<IdResponse>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -87,11 +90,12 @@ class GeneratorService extends __BaseService {
     );
   }
   /**
+   * Generate Infrastructure Service-IDs
    * @param body undefined
-   * @return User info updated
+   * @return IS Service-IDs created
    */
-  postApiV1IsService(body?: ISIdRequest): __Observable<IdResponse> {
-    return this.postApiV1IsServiceResponse(body).pipe(
+  generateISServiceIds(body?: ISIdRequest): __Observable<IdResponse> {
+    return this.generateISServiceIdsResponse(body).pipe(
       __map(_r => _r.body as IdResponse)
     );
   }

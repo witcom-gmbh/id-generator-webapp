@@ -10,14 +10,16 @@ import { map as __map, filter as __filter } from 'rxjs/operators';
 import { ServiceTypeResponse } from '../models/service-type-response';
 import { ServiceOwnerResponse } from '../models/service-owner-response';
 import { ManagementDomainResponse } from '../models/management-domain-response';
+import { ServiceTemplateResponse } from '../models/service-template-response';
 @Injectable({
   providedIn: 'root',
 })
 class HelperService extends __BaseService {
-  static readonly getApiV1IsServiceTypePath = '/api/v1/is-service-type';
-  static readonly getApiV1CfServiceTypePath = '/api/v1/cf-service-type';
-  static readonly getApiV1ServiceOwnerPath = '/api/v1/service-owner';
-  static readonly getApiV1ManagementDomainPath = '/api/v1/management-domain';
+  static readonly getIsServiceTypesPath = '/api/v1/is-service-type';
+  static readonly getCFServiceTypesPath = '/api/v1/cf-service-type';
+  static readonly getServiceOwnersPath = '/api/v1/service-owner';
+  static readonly getManagementDomainsPath = '/api/v1/management-domain';
+  static readonly getServiceTemplatesPath = '/api/v1/service-template';
 
   constructor(
     config: __Configuration,
@@ -27,9 +29,10 @@ class HelperService extends __BaseService {
   }
 
   /**
+   * Get Infrastructure Service-Types
    * @return List of infrastructure service-types
    */
-  getApiV1IsServiceTypeResponse(): __Observable<__StrictHttpResponse<ServiceTypeResponse>> {
+  getIsServiceTypesResponse(): __Observable<__StrictHttpResponse<ServiceTypeResponse>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -51,18 +54,20 @@ class HelperService extends __BaseService {
     );
   }
   /**
+   * Get Infrastructure Service-Types
    * @return List of infrastructure service-types
    */
-  getApiV1IsServiceType(): __Observable<ServiceTypeResponse> {
-    return this.getApiV1IsServiceTypeResponse().pipe(
+  getIsServiceTypes(): __Observable<ServiceTypeResponse> {
+    return this.getIsServiceTypesResponse().pipe(
       __map(_r => _r.body as ServiceTypeResponse)
     );
   }
 
   /**
+   * Get customer-facing Service-Types
    * @return List of customer-facing service-types
    */
-  getApiV1CfServiceTypeResponse(): __Observable<__StrictHttpResponse<ServiceTypeResponse>> {
+  getCFServiceTypesResponse(): __Observable<__StrictHttpResponse<ServiceTypeResponse>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -84,18 +89,20 @@ class HelperService extends __BaseService {
     );
   }
   /**
+   * Get customer-facing Service-Types
    * @return List of customer-facing service-types
    */
-  getApiV1CfServiceType(): __Observable<ServiceTypeResponse> {
-    return this.getApiV1CfServiceTypeResponse().pipe(
+  getCFServiceTypes(): __Observable<ServiceTypeResponse> {
+    return this.getCFServiceTypesResponse().pipe(
       __map(_r => _r.body as ServiceTypeResponse)
     );
   }
 
   /**
+   * Get service-owners
    * @return List of service-owners
    */
-  getApiV1ServiceOwnerResponse(): __Observable<__StrictHttpResponse<ServiceOwnerResponse>> {
+  getServiceOwnersResponse(): __Observable<__StrictHttpResponse<ServiceOwnerResponse>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -117,18 +124,20 @@ class HelperService extends __BaseService {
     );
   }
   /**
+   * Get service-owners
    * @return List of service-owners
    */
-  getApiV1ServiceOwner(): __Observable<ServiceOwnerResponse> {
-    return this.getApiV1ServiceOwnerResponse().pipe(
+  getServiceOwners(): __Observable<ServiceOwnerResponse> {
+    return this.getServiceOwnersResponse().pipe(
       __map(_r => _r.body as ServiceOwnerResponse)
     );
   }
 
   /**
+   * Get management-domains
    * @return List of management-domains
    */
-  getApiV1ManagementDomainResponse(): __Observable<__StrictHttpResponse<ManagementDomainResponse>> {
+  getManagementDomainsResponse(): __Observable<__StrictHttpResponse<ManagementDomainResponse>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -150,11 +159,47 @@ class HelperService extends __BaseService {
     );
   }
   /**
+   * Get management-domains
    * @return List of management-domains
    */
-  getApiV1ManagementDomain(): __Observable<ManagementDomainResponse> {
-    return this.getApiV1ManagementDomainResponse().pipe(
+  getManagementDomains(): __Observable<ManagementDomainResponse> {
+    return this.getManagementDomainsResponse().pipe(
       __map(_r => _r.body as ManagementDomainResponse)
+    );
+  }
+
+  /**
+   * Get service-templates
+   * @return List of service-Templates
+   */
+  getServiceTemplatesResponse(): __Observable<__StrictHttpResponse<ServiceTemplateResponse>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/api/v1/service-template`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ServiceTemplateResponse>;
+      })
+    );
+  }
+  /**
+   * Get service-templates
+   * @return List of service-Templates
+   */
+  getServiceTemplates(): __Observable<ServiceTemplateResponse> {
+    return this.getServiceTemplatesResponse().pipe(
+      __map(_r => _r.body as ServiceTemplateResponse)
     );
   }
 }
