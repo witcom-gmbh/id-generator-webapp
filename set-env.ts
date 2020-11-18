@@ -11,10 +11,19 @@ require('dotenv').config();
 const environment = argv.environment;
 const isProd = environment === 'prod';
 
+const configPath = `./src/assets/configdata/appconfig.json`;
+const configFile = `
+{
+"APP_KEYCLOAK_URL":"${process.env.KEYCLOAK_SERVER_URL}",
+"APP_KEYCLOAK_REALM":"${process.env.KEYCLOAK_REALM}",
+"APP_KEYCLOAK_RESOURCE_ID":"${process.env.KEYCLOAK_RESOURCE_ID}",
+"APP_API_URL":"${process.env.API_GENERATOR_URL}"
+}
+`
+
 const targetPath = `./src/environments/environment.${environment}.ts`;
 const envConfigFile = `
 import {  NgxLoggerLevel } from 'ngx-logger';
-import { KeycloakConfig } from 'keycloak-angular';
 
 let LOGGER_CONFIG = {
     //serverLoggingUrl: '/api/logs',
@@ -22,24 +31,9 @@ let LOGGER_CONFIG = {
     serverLogLevel: NgxLoggerLevel.OFF
 };
 
-// Add here your keycloak setup infos
-let keycloakConfig: KeycloakConfig = {
-  url: "${process.env.KEYCLOAK_SERVER_URL}",
-  realm: "${process.env.KEYCLOAK_REALM}",
-  clientId: "${process.env.KEYCLOAK_RESOURCE_ID}"
-};
-
-let apiConfig = {
-    url: "${process.env.API_GENERATOR_URL}"
-    
-}
-
 export const environment = {
   production: ${isProd},
-  apiUrl:"${process.env.API_GENERATOR_URL}",
-  loggerConfig:LOGGER_CONFIG,
-  keycloakConfig: keycloakConfig,
-  apiConfig: apiConfig
+  loggerConfig:LOGGER_CONFIG
 };
 `
 
@@ -47,6 +41,12 @@ writeFile(targetPath, envConfigFile, function (err) {
   if (err) {
     console.log(err);
   }
+  console.log(`ENV-Output generated at ${targetPath}`);
+});
 
-  console.log(`Output generated at ${targetPath}`);
+writeFile(configPath, configFile, function (err) {
+  if (err) {
+    console.log(err);
+  }
+  console.log(`Config-File generated at ${configPath}`);
 });
