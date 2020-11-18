@@ -3,20 +3,21 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent} from './home/home.component';
 import { AuthztestComponent } from './authztest/authztest.component';
 import { AppAuthGuard } from './app-authguard';
+import { AppResolverService } from './services/app-resolver.service';
 
 const routes: Routes = [
     {
-      path: 'home', component: HomeComponent      
+      path: 'home', component: HomeComponent,canActivate: [AppResolverService]
     },
     {
       path: 'authztest', component: AuthztestComponent,canActivate: [AppAuthGuard] ,data:{permissions:[{
           rsname:"cf-service",
-          scope:"create"  
+          scope:"create"
       }]}
     },
-    
+
     {
-        path: '', redirectTo: '/home', pathMatch: 'full' 
+        path: '', redirectTo: '/home', pathMatch: 'full',canActivate: [AppResolverService]
     }
 ];
 
