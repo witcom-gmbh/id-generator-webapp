@@ -22,7 +22,7 @@ spec:
           name: 'builder:latest'
         paths:
           - destinationDir: .
-            sourcePath: /opt/app-root/src/.
+            sourcePath: /opt/app-root/src/dist/id-generator-webapp/.
     type: Image
   strategy:
     sourceStrategy:
