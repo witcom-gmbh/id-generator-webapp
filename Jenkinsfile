@@ -4,7 +4,7 @@ def approvalRequired = false;
 def getSource = true;
 def packageJSONVersion = "UNKNOWN";
 def buildName = "UNKNOWN";
-//def branchName = "feat_external_config"
+def branchName = "master"
 pipeline {
     agent none
 
