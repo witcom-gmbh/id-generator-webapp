@@ -1,0 +1,35 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: runtime
+  name: runtime
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'runtime:latest'
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    images:
+      - as: null
+        from:
+          kind: ImageStreamTag
+          name: 'builder:latest'
+        paths:
+          - destinationDir: .
+            sourcePath: /opt/app-root/src/dist/id-generator-webapp/.
+    type: Image
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: 'nginx-118:latest'
+        namespace: openshift
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers: []

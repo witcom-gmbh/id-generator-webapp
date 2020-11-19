@@ -1,12 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER,Provider} from '@angular/core';
+import { NgModule, APP_INITIALIZER,Provider, InjectionToken} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { ServicesModule } from './services/services.module';
 
-import { LoggerModule } from 'ngx-logger';
+import { ConfigService } from './services/config.service';
+import { appConfig,loggerConfig } from './config/config-init';
+
+import { LoggerModule, LoggerConfig, NGXLogger } from 'ngx-logger';
 import { AlertModule } from 'ngx-alerts';
 
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
@@ -31,20 +34,36 @@ import { HasKeycloakAuthorizationDirective } from './shared/has-keycloak-authori
 import { KeycloakAuthzAngularModule } from 'keycloak-authz-angular';
 import { AuthztestComponent } from './authztest/authztest.component';
 
-export const KEYCLOAK_PROVIDER: Provider = {
+const ConfigDeps = new InjectionToken<(() => Function)[]>('configDeps');
+
+export const LOGGER_PROVIDER:Provider = {
+  provide: LoggerConfig,
+  useFactory:loggerConfig
+}
+
+export const CONFIG_PROVIDER:Provider = {
     provide: APP_INITIALIZER,
-    useFactory: kcInitializer,
+    useFactory: appConfig,
     multi: true,
-    deps: [KeycloakService,KeycloakAuthorizationService]
+    deps: [ConfigService,ConfigDeps]
 };
 
-export const API_PROVIDER: Provider = {
-    provide: APP_INITIALIZER,
-    useFactory: apiConfig,
-    multi: true,
-    deps: [ApiConfiguration]
-};
+export function dependencyFactory(
+        kcService:KeycloakService,
+        kcAuthService:KeycloakAuthorizationService,
+        config: ConfigService,
+        apiConfigService: ApiConfiguration): any {
+        return  [
+          kcInitializer(kcService,kcAuthService,config),
+          apiConfig(apiConfigService,config)
+        ];
+}
 
+export const CONFIG_DEPENDENCIES:Provider = {
+  provide: ConfigDeps,
+  useFactory: dependencyFactory,
+  deps: [KeycloakService,KeycloakAuthorizationService,ConfigService,ApiConfiguration]
+}
 
 @NgModule({
   declarations: [
@@ -63,12 +82,14 @@ export const API_PROVIDER: Provider = {
     SharedModule,
     DropdownModule,
     KeycloakAuthzAngularModule,
-    LoggerModule.forRoot(environment.loggerConfig),
+    //LoggerModule.forRoot(environment.loggerConfig),
+    //LoggerModule.forRoot(getLogConfig
     KeycloakAngularModule,
     ApiModule,
     AlertModule.forRoot({maxMessages: 5, timeout: 5000, position: 'right'})
   ],
-  providers: [KEYCLOAK_PROVIDER,API_PROVIDER],
+  //providers: [CONFIG_PROVIDER ,KEYCLOAK_PROVIDER,API_PROVIDER],
+  providers: [CONFIG_PROVIDER ,CONFIG_DEPENDENCIES],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

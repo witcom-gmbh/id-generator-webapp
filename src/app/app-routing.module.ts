@@ -4,19 +4,20 @@ import { HomeComponent} from './home/home.component';
 import { AuthztestComponent } from './authztest/authztest.component';
 import { AppAuthGuard } from './app-authguard';
 
+
 const routes: Routes = [
     {
-      path: 'home', component: HomeComponent      
+      path: 'home', component: HomeComponent
     },
     {
       path: 'authztest', component: AuthztestComponent,canActivate: [AppAuthGuard] ,data:{permissions:[{
           rsname:"cf-service",
-          scope:"create"  
+          scope:"create"
       }]}
     },
-    
+
     {
-        path: '', redirectTo: '/home', pathMatch: 'full' 
+        path: '', redirectTo: '/home', pathMatch: 'full'
     }
 ];
 

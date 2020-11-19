@@ -2,6 +2,7 @@
 
 .env
 src/environments/environment.*.ts
+src/assets/configdata/*.json
 
 # compiled output
 /dist

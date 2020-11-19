@@ -1,8 +1,8 @@
-import { environment } from '../../environments/environment';
 import { ApiConfiguration } from '../api/api-configuration';
+import { ConfigService } from '../services/config.service';
 
-export function apiConfig(config: ApiConfiguration): Function {
+export function apiConfig(config: ApiConfiguration,configService:ConfigService): Function {
   return () => {
-    config.rootUrl = environment.apiConfig.url;
+    config.rootUrl = configService.apiConfig.url;
   };
 }
