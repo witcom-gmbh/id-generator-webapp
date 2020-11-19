@@ -228,10 +228,15 @@ pipeline {
                                 existingBC.delete();
                             }
                             def runtimebc = readYaml file: './openshift-runtime-bc.yaml'
-							runtimebc.spec.output = []
-							runtimebc.spec.output.to.kind = "DockerImage"
-                            runtimebc.spec.output.to.name = "${dockerRepo}:${packageJSONVersion}"
-							runtimebc.spec.output.pushSecret.name = "nexus-dev"
+                            runtimebc.spec.output = [
+                              "to":[
+                              "kind":"DockerImage",
+                              "name":"${dockerRepo}:${packageJSONVersion}"
+                              ],
+                              "pushSecret":[
+                              "name":"nexus-dev"
+                              ]
+                              ]
 							runtimebc.spec.source.images[0].from.name = "${buildName}-builder:latest"
                             runtimebc.metadata.name = "${buildName}-runtime"
 							runtimebc.metadata.labels["build"]= "${buildName}-runtime"
@@ -263,10 +268,15 @@ pipeline {
                                 existingBC.delete();
                             }
                             def runtimebc = readYaml file: './openshift-runtime-bc.yaml'
-							runtimebc.spec.output = []
-							runtimebc.spec.output.to.kind = "DockerImage"
-                            runtimebc.spec.output.to.name = "${dockerRepo}:latest"
-							runtimebc.spec.output.pushSecret.name = "nexus-dev"
+                            runtimebc.spec.output = [
+                              "to":[
+                              "kind":"DockerImage",
+                              "name":"${dockerRepo}:latest"
+                              ],
+                              "pushSecret":[
+                              "name":"nexus-dev"
+                              ]
+                              ]
 							runtimebc.spec.source.images[0].from.name = "${buildName}-builder:latest"
                             runtimebc.metadata.name = "${buildName}-runtime"
 							runtimebc.metadata.labels["build"]= "${buildName}-runtime"
@@ -296,6 +306,10 @@ pipeline {
                     openshift.withCluster() {
                         openshift.withProject() {
                             def existingIS = openshift.selector('is', [build: "${buildName}-builder"])
+                            if(existingIS){
+                                existingIS.delete();
+                            }
+                            existingIS = openshift.selector('is', [build: "${buildName}-runtime"])
                             if(existingIS){
                                 existingIS.delete();
                             }
