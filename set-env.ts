@@ -12,6 +12,8 @@ const environment = argv.environment;
 const isProd = environment === 'prod';
 
 const configPath = `./src/assets/configdata/appconfig.json`;
+let configFile=`{}`;
+if(!isProd){
 const configFile = `
 {
 "APP_KEYCLOAK_URL":"${process.env.KEYCLOAK_SERVER_URL}",
@@ -20,6 +22,7 @@ const configFile = `
 "APP_API_URL":"${process.env.API_GENERATOR_URL}"
 }
 `
+}
 
 const targetPath = `./src/environments/environment.${environment}.ts`;
 const envConfigFile = `

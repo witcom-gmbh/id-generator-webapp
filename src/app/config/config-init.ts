@@ -1,12 +1,10 @@
 import { ConfigService } from '../services/config.service';
 
-/*
-export function appConfig(config: ConfigService): Function {
-  return () => {
-
-    return config.loadAppConfig();
-  };
-}*/
+export function loggerConfig(
+  config: ConfigService
+  ):any {
+      return  config.getLogConfig;
+}
 
 export function appConfig(
   config: ConfigService,
@@ -15,8 +13,7 @@ export function appConfig(
   return (): Promise<any> => {
     return new Promise((resolve, reject) => {
         config.loadAppConfig().then(data =>{
-
-        return Promise.all(configDeps.map(dep => dep()));
+          return Promise.all(configDeps.map(dep => dep()));
         })
         .then(() => {
           // Once configuration dependencies are resolved, then resolve factory

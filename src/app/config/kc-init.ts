@@ -6,7 +6,7 @@ export function kcInitializer(keycloak: KeycloakService,authService:KeycloakAuth
   return (): Promise<any> => {
     return new Promise(async (resolve, reject) => {
       try {
-
+//console.log(configService);
         await keycloak.init({
           config: configService.keycloakConfig,
           initOptions: {
