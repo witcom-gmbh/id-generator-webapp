@@ -1,69 +1,71 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER,Provider, InjectionToken} from '@angular/core';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { NgModule, APP_INITIALIZER, Provider, InjectionToken } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { ServicesModule } from './services/services.module';
 
 import { ConfigService } from './services/config.service';
-import { appConfig,loggerConfig } from './config/config-init';
+import { appConfig, loggerConfig } from './config/config-init';
 
 import { LoggerModule, LoggerConfig, NGXLogger } from 'ngx-logger';
-import { AlertModule } from 'ngx-alerts';
+import { AlertModule, AlertService } from 'ngx-alerts';
 
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 //import {KeycloakAuthorizationService} from '@idapp/services/services';
-import {KeycloakAuthorizationService} from 'keycloak-authz-angular';
+import { KeycloakAuthorizationService } from 'keycloak-authz-angular';
 import { kcInitializer } from './config/kc-init';
 
 import { ApiConfiguration } from './api/api-configuration';
 import { ApiModule } from './api/api.module';
-import { apiConfig} from './config/api-init'
+import { apiConfig } from './config/api-init'
 
 import { environment } from '../environments/environment';
 
-import {TabViewModule} from 'primeng/tabview';
-import {PanelModule} from 'primeng/panel';
-import {ButtonModule} from 'primeng/button';
-import {DropdownModule} from 'primeng/dropdown';
-import {InputSwitchModule} from 'primeng/inputswitch';
+import { TabViewModule } from 'primeng/tabview';
+import { PanelModule } from 'primeng/panel';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 import { HomeComponent } from './home/home.component';
 import { HasKeycloakAuthorizationDirective } from './shared/has-keycloak-authorization.directive';
 import { KeycloakAuthzAngularModule } from 'keycloak-authz-angular';
 import { AuthztestComponent } from './authztest/authztest.component';
 
-const ConfigDeps = new InjectionToken<(() => Function)[]>('configDeps');
+//with AoT Compiling this has to be exported
+export const ConfigDeps = new InjectionToken<(() => Function)[]>('configDeps');
 
-export const LOGGER_PROVIDER:Provider = {
+export const LOGGER_PROVIDER: Provider = {
   provide: LoggerConfig,
-  useFactory:loggerConfig
+  useFactory: loggerConfig
 }
 
-export const CONFIG_PROVIDER:Provider = {
-    provide: APP_INITIALIZER,
-    useFactory: appConfig,
-    multi: true,
-    deps: [ConfigService,ConfigDeps]
+export const CONFIG_PROVIDER: Provider = {
+  provide: APP_INITIALIZER,
+  useFactory: appConfig,
+  multi: true,
+  deps: [ConfigService, AlertService, ConfigDeps]
 };
 
 export function dependencyFactory(
-        kcService:KeycloakService,
-        kcAuthService:KeycloakAuthorizationService,
-        config: ConfigService,
-        apiConfigService: ApiConfiguration): any {
-        return  [
-          kcInitializer(kcService,kcAuthService,config),
-          apiConfig(apiConfigService,config)
-        ];
+  kcService: KeycloakService,
+  kcAuthService: KeycloakAuthorizationService,
+  config: ConfigService,
+  apiConfigService: ApiConfiguration): any {
+  return [
+    kcInitializer(kcService, kcAuthService, config),
+    apiConfig(apiConfigService, config)
+  ];
 }
 
-export const CONFIG_DEPENDENCIES:Provider = {
+export const CONFIG_DEPENDENCIES: Provider = {
   provide: ConfigDeps,
   useFactory: dependencyFactory,
-  deps: [KeycloakService,KeycloakAuthorizationService,ConfigService,ApiConfiguration]
+  deps: [KeycloakService, KeycloakAuthorizationService, ConfigService, ApiConfiguration, AlertService]
 }
+
 
 @NgModule({
   declarations: [
@@ -86,10 +88,10 @@ export const CONFIG_DEPENDENCIES:Provider = {
     //LoggerModule.forRoot(getLogConfig
     KeycloakAngularModule,
     ApiModule,
-    AlertModule.forRoot({maxMessages: 5, timeout: 5000, position: 'right'})
+    AlertModule.forRoot({ maxMessages: 5, timeout: 5000, position: 'right' })
   ],
   //providers: [CONFIG_PROVIDER ,KEYCLOAK_PROVIDER,API_PROVIDER],
-  providers: [CONFIG_PROVIDER ,CONFIG_DEPENDENCIES],
+  providers: [CONFIG_PROVIDER, CONFIG_DEPENDENCIES],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,10 +1,11 @@
 {
   "name": "id-generator-webapp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {
     "ng": "ng",
     "config": "./node_modules/.bin/ts-node -O '{\"module\": \"commonjs\"}' ./set-env.ts",
-    "start": "npm run ng-swagger-gen && npm run config -- --environment=dev && ng serve --host=0.0.0.0 --disable-host-check --configuration=dev",
+    "start": "npm run ng-swagger-gen && npm run config -- --environment=dev && ng serve --host=0.0.0.0 --disable-host-check --configuration=dev --aot",
+    "start-prod": "npm run ng-swagger-gen && npm run config -- --environment=dev && ng serve --host=0.0.0.0 --disable-host-check --configuration=production",
     "build": "npm run ng-swagger-gen && npm run config -- --environment=prod && ng build --configuration=production",
     "ng-swagger-gen": "ng-swagger-gen",
     "test": "ng test",

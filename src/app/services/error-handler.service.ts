@@ -53,6 +53,16 @@ export class ErrorHandlerService {
     private alertService: AlertService,
   
   ) { }
+
+
+  handleError(error: Error) {
+
+
+    this.alertService.danger(error.message);
+
+    // Always log errors
+    this.logger.fatal("error2");
+  }
   
   /**
    * Handles an from the given Http response

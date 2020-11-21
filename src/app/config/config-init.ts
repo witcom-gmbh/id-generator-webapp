@@ -1,4 +1,6 @@
+import { Observable } from 'rxjs';
 import { ConfigService } from '../services/config.service';
+import { AlertService } from 'ngx-alerts';
 
 export function loggerConfig(
   config: ConfigService
@@ -8,6 +10,7 @@ export function loggerConfig(
 
 export function appConfig(
   config: ConfigService,
+  alertService: AlertService,
   configDeps: (() => Function)[]
 ): () => Promise<any> {
   return (): Promise<any> => {
@@ -19,8 +22,10 @@ export function appConfig(
           // Once configuration dependencies are resolved, then resolve factory
           resolve();
         })
-        .catch(() => {
-          reject();
+        .catch((data) => {
+
+          alertService.danger("Applikation konnte nicht initialisiert werden !!");
+          resolve(data);
         });
     });
   };
