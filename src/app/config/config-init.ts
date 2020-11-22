@@ -23,6 +23,7 @@ export function appConfig(
           resolve();
         })
         .catch((data) => {
+          console.log("App-Init error: " + data);
 
           alertService.danger("Applikation konnte nicht initialisiert werden !!");
           resolve(data);

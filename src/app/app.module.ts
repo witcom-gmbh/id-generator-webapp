@@ -9,7 +9,7 @@ import { ServicesModule } from './services/services.module';
 import { ConfigService } from './services/config.service';
 import { appConfig, loggerConfig } from './config/config-init';
 
-import { LoggerModule, LoggerConfig, NGXLogger } from 'ngx-logger';
+import { LoggerModule, LoggerConfig, NGXLogger, NgxLoggerLevel } from 'ngx-logger';
 import { AlertModule, AlertService } from 'ngx-alerts';
 
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
@@ -34,13 +34,20 @@ import { HasKeycloakAuthorizationDirective } from './shared/has-keycloak-authori
 import { KeycloakAuthzAngularModule } from 'keycloak-authz-angular';
 import { AuthztestComponent } from './authztest/authztest.component';
 
+let LOGGER_CONFIG = {
+  //serverLoggingUrl: '/api/logs',
+  level: NgxLoggerLevel.DEBUG,
+  serverLogLevel: NgxLoggerLevel.OFF
+};
+
 //with AoT Compiling this has to be exported
 export const ConfigDeps = new InjectionToken<(() => Function)[]>('configDeps');
 
+/*
 export const LOGGER_PROVIDER: Provider = {
   provide: LoggerConfig,
   useFactory: loggerConfig
-}
+}*/
 
 export const CONFIG_PROVIDER: Provider = {
   provide: APP_INITIALIZER,
@@ -84,7 +91,8 @@ export const CONFIG_DEPENDENCIES: Provider = {
     SharedModule,
     DropdownModule,
     KeycloakAuthzAngularModule,
-    //LoggerModule.forRoot(environment.loggerConfig),
+    ServicesModule,
+    LoggerModule.forRoot(LOGGER_CONFIG),
     //LoggerModule.forRoot(getLogConfig
     KeycloakAngularModule,
     ApiModule,
