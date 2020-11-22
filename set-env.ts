@@ -12,9 +12,9 @@ const environment = argv.environment;
 const isProd = environment === 'prod';
 
 const configPath = `./src/assets/configdata/appconfig.json`;
-//let configFile=`{}`;
-//if(!isProd){
-const configFile = `{
+let configFile=`{}`;
+if(!isProd){
+configFile = `{
 "APP_KEYCLOAK_URL":"${process.env.KEYCLOAK_SERVER_URL}",
 "APP_KEYCLOAK_REALM":"${process.env.KEYCLOAK_REALM}",
 "APP_KEYCLOAK_RESOURCE_ID":"${process.env.KEYCLOAK_RESOURCE_ID}",
@@ -22,7 +22,7 @@ const configFile = `{
 "APP_API_URL":"${process.env.API_GENERATOR_URL}"
 }
 `
-//}
+}
 
 const targetPath = `./src/environments/environment.${environment}.ts`;
 const envConfigFile = `
