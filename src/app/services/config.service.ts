@@ -39,11 +39,16 @@ export class ConfigService {
     return apiConfig;
   }
 
+  get keyCloakResourceId():string{
+
+    return this._config["keycloakResourceId"]
+  }
+
   get keycloakConfig():any{
     let keycloakConfig: KeycloakConfig = {
       url: this._config["keycloakUrl"],
       realm: this._config["keycloakRealm"],
-      clientId: this._config["keycloakResourceId"]
+      clientId: this._config["keycloakClientId"]
     };
 
     return keycloakConfig;
@@ -66,6 +71,10 @@ export class ConfigService {
         return this._config;
 
         //this._config = data;
+    })
+    .catch((data) => {
+      console.log("Error loading application config: ",data );
+
     });
 
 

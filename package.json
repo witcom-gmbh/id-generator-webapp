@@ -1,11 +1,13 @@
 {
   "name": "id-generator-webapp",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "scripts": {
     "ng": "ng",
     "config": "./node_modules/.bin/ts-node -O '{\"module\": \"commonjs\"}' ./set-env.ts",
-    "start": "npm run ng-swagger-gen && npm run config -- --environment=dev && ng serve --host=0.0.0.0 --disable-host-check --configuration=dev",
-    "build": "npm run ng-swagger-gen && npm run config -- --environment=prod && ng build --configuration=production",
+    "copy-nginx-config":"mkdir -p ./dist/id-generator-webapp/nginx-default-cfg && cp ./nginx-runtime/nginx-default-cfg/*  ./dist/id-generator-webapp/nginx-default-cfg/",
+    "start": "npm run ng-swagger-gen && npm run config -- --environment=dev && ng serve --host=0.0.0.0 --disable-host-check --configuration=dev --aot",
+    "start-prod": "npm run ng-swagger-gen && npm run config -- --environment=dev && ng serve --host=0.0.0.0 --disable-host-check --configuration=production",
+    "build": "npm run ng-swagger-gen && npm run config -- --environment=prod && ng build --configuration=production && npm run copy-nginx-config",
     "ng-swagger-gen": "ng-swagger-gen",
     "test": "ng test",
     "lint": "ng lint",
