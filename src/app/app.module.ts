@@ -34,7 +34,7 @@ import { HasKeycloakAuthorizationDirective } from './shared/has-keycloak-authori
 import { KeycloakAuthzAngularModule } from 'keycloak-authz-angular';
 import { AuthztestComponent } from './authztest/authztest.component';
 
-let LOGGER_CONFIG = {
+export const LOGGER_CONFIG = {
   //serverLoggingUrl: '/api/logs',
   level: NgxLoggerLevel.DEBUG,
   serverLogLevel: NgxLoggerLevel.OFF
@@ -93,12 +93,10 @@ export const CONFIG_DEPENDENCIES: Provider = {
     KeycloakAuthzAngularModule,
     ServicesModule,
     LoggerModule.forRoot(LOGGER_CONFIG),
-    //LoggerModule.forRoot(getLogConfig
     KeycloakAngularModule,
     ApiModule,
     AlertModule.forRoot({ maxMessages: 5, timeout: 5000, position: 'right' })
   ],
-  //providers: [CONFIG_PROVIDER ,KEYCLOAK_PROVIDER,API_PROVIDER],
   providers: [CONFIG_PROVIDER, CONFIG_DEPENDENCIES],
   bootstrap: [AppComponent]
 })

@@ -71,6 +71,10 @@ export class ConfigService {
         return this._config;
 
         //this._config = data;
+    })
+    .catch((data) => {
+      console.log("Error loading application config: ",data );
+
     });
 
 

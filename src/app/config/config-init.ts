@@ -15,7 +15,9 @@ export function appConfig(
 ): () => Promise<any> {
   return (): Promise<any> => {
     return new Promise((resolve, reject) => {
+        console.log("Loading appllication config");
         config.loadAppConfig().then(data =>{
+          console.log("init dependencies");
           return Promise.all(configDeps.map(dep => dep()));
         })
         .then(() => {
@@ -26,6 +28,7 @@ export function appConfig(
           console.log("App-Init error: " + data);
 
           alertService.danger("Applikation konnte nicht initialisiert werden !!");
+          //reject();
           resolve(data);
         });
     });
