@@ -1,6 +1,6 @@
 {
   "name": "id-generator-webapp",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "scripts": {
     "ng": "ng",
     "config": "./node_modules/.bin/ts-node -O '{\"module\": \"commonjs\"}' ./set-env.ts",
