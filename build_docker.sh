@@ -3,6 +3,7 @@
 dockerRepo=${1:-witcom/id-generator-webapp}
 
 cd /tmp
+rm -rf id-generator-webapp
 git clone https://github.com/witcom-gmbh/id-generator-webapp.git
 cd id-generator-webapp
 
@@ -35,5 +36,4 @@ docker rmi ${dockerRepo}:${buildVersion}
 docker rmi ${buildName}-webapp:latest
 rm -rf $SRC_DIR
 
-cd ..
-rm -rf witcom-portal
+cd -
