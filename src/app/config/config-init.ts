@@ -15,14 +15,14 @@ export function appConfig(
 ): () => Promise<any> {
   return (): Promise<any> => {
     return new Promise((resolve, reject) => {
-        console.log("Loading appllication config");
+        console.log("Loading application config");
         config.loadAppConfig().then(data =>{
           console.log("init dependencies");
           return Promise.all(configDeps.map(dep => dep()));
         })
         .then(() => {
           // Once configuration dependencies are resolved, then resolve factory
-          resolve();
+          resolve({});
         })
         .catch((data) => {
           console.log("App-Init error: " + data);
