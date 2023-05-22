@@ -30,7 +30,7 @@
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "git config core.hooksPath '.git-hooks' && npm install -g npm@9.6.7 && npm install",
+	"postCreateCommand": "git config core.hooksPath '.git-hooks' && npm install -g npm@9.6.7 && npm install --legacy-peer-deps && alias ng=./node_modules/.bin/ng",
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "node"
