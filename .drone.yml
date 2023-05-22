@@ -1,0 +1,105 @@
+global-variables:
+  environment: &default_environment
+    REGISTRY:
+      from_secret: artifactory-host-01
+    USERNAME:
+      from_secret: artifactory-user-01
+    PASSWORD:
+      from_secret: artifactory-password-01
+
+kind: pipeline
+type: docker
+name: id-generator-webapp-with-drone
+platform:
+  os: linux
+  arch: amd64 
+
+steps:
+# - name: s2i-build-angular
+#   image: artifactory.witcom.services/drone-plugins/drone-s2i-builder:v0.2.1
+#   volumes:
+#   - name: cache
+#     path: /drone/cache
+#   - name: dockersock
+#     path: /var/run
+#   pull: always  
+#   settings:
+#     builder_image: registry.access.redhat.com/ubi8/nodejs-16-minimal:1-14
+#     extract: true
+#     extract_path: /opt/app-root/src/dist/id-generator-webapp
+#     cache_dir: /drone/cache
+
+- name: Fix permissions on build-output directory
+  image: alpine
+  volumes:  
+  - name: build-output
+    path: /drone/src/dist
+  commands:
+  - chmod -R g+=wrx /drone/src/dist
+
+# USE CACHE FOR NODe_MODULES (IF MINIO IS AVAILABLE)
+
+- name: Build dist
+  image: node:16
+  volumes:
+   - name: build-output
+     path: /drone/src/dist
+  commands:
+  - npm install -g npm@latest
+  - npm install --legacy-peer-deps && alias ng=./node_modules/.bin/ng
+  - npm run build
+
+- name: Copy nginx-runtime-configuration
+  image: alpine
+  volumes:
+   - name: build-output
+     path: /drone/src/dist
+  commands:
+  - cp -rf ./nginx-runtime/nginx-default-cfg /drone/src/dist/id-generator-webapp
+
+- name: s2i-build-nginx
+  image: artifactory.witcom.services/drone-plugins/drone-s2i-builder:v0.2.1
+  volumes:
+  - name: build-output
+    path: /drone/src/dist
+  - name: dockersock
+    path: /var/run
+  pull: always
+  settings:
+    builder_image: registry.access.redhat.com/ubi9/nginx-120
+    push: true
+    source: /drone/src/dist/id-generator-webapp
+    registry: artifactory.witcom.services
+    target_image: artifactory.witcom.services/itsm/id-generator-webapp
+    tags:
+      - latest
+      - ${DRONE_TAG}
+    username:
+      from_secret: artifactory-user-01
+    password:
+      from_secret: artifactory-password-01
+
+services:
+- name: docker
+  image: docker:dind
+  privileged: true
+  volumes:
+  - name: dockersock
+    path: /var/run
+
+volumes:
+- name: cache
+  temp: {}
+- name: build-output
+  temp: {}
+- name: dockersock
+  temp: {}
+
+
+trigger:
+  event:
+  - tag
+#  - push
+#  - pull_request 
+  ref:
+  - refs/tags/v*
