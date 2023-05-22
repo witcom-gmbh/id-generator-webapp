@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## v1.0.9 - 2023-05-22
+#### Bug Fixes
+- Provide default for API-Url - (fa8db8d) - iceman91176
+- Fix typos in config-init - (f2b685a) - iceman91176
+
+- - -
+
 ## v1.0.8 - 2023-05-22
 #### Miscellaneous Chores
 - Applies coding policies - (a825d68) - iceman91176
