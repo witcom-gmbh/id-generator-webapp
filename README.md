@@ -1,3 +1,7 @@
+# THIS PROJECT IS NOT MAINTAINED ANY MORE
+
+ID-Generator and WebApp have undergone a complete rework (https://github.com/witcom-gmbh/witcom-id-generator-webapp / https://github.com/witcom-gmbh/witcom-id-generator)
+
 # ID Generator Web-Application
 
 Simple Web-Application for https://github.com/witcom-gmbh/id-generator
